@@ -6,7 +6,7 @@ import {
   Container,
   Typography,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import PublicHeader from "./PublicHeader";
 import scienceImage from "../assets/science.jpg";
 
@@ -40,87 +40,103 @@ const cards = [
 
 const CategoryPage = () => {
   const scrollRef = useRef(null);
-  const [centerIndex, setCenterIndex] = useState(1); // Start with the second card as center (index 1)
+  const [centerIndex, setCenterIndex] = useState(1); // Start with the second card centered
+  const cardWidth = 250; // Fixed width for scroll position calculations
 
+  // Handle clicking on a card
   const handleCardClick = (index) => {
     setCenterIndex(index);
-    const cardWidth = 250; // Adjust based on card width + gap
-    const scrollPosition = (index - 1) * cardWidth; // Center the selected card
+    const scrollPosition = index * cardWidth;
     scrollRef.current.scrollTo({ left: scrollPosition, behavior: "smooth" });
   };
 
+  // Update centerIndex based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollContainer = scrollRef.current;
+      if (!scrollContainer) return;
+
+      const scrollLeft = scrollContainer.scrollLeft;
+      const newCenterIndex = Math.round(scrollLeft / cardWidth);
+      setCenterIndex(newCenterIndex);
+    };
+
+    const scrollContainer = scrollRef.current;
+    scrollContainer.addEventListener("scroll", handleScroll);
+    return () => scrollContainer.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <>
-      <Container maxWidth="lg" disableGutters paddingTop="32px">
-        <PublicHeader />
-        <Box sx={{ position: "relative", height: "100vh" }}>
+    <Container maxWidth="lg" disableGutters>
+      <PublicHeader />
+      <Box sx={{ position: "relative", height: "100vh" }}>
+        <Box
+          sx={{
+            width: "60%",
+            margin: "0 auto",
+            height: "50%",
+            top: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1,
+          }}
+        >
           <Box
+            ref={scrollRef}
             sx={{
-              width: "100vw",
-              height: "60%",
-              top: 0,
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 1,
+              overflowX: "auto",
+              gap: 2,
+              padding: 2,
+              scrollSnapType: "x mandatory",
+              "&::-webkit-scrollbar": { display: "none" },
+              msOverflowStyle: "none",
+              scrollbarWidth: "none",
             }}
           >
-            <Box
-              ref={scrollRef}
-              sx={{
-                display: "flex",
-                overflowX: "hidden",
-                gap: 2,
-                padding: 2,
-                scrollBehavior: "smooth",
-                "&::-webkit-scrollbar": { display: "none" }, // Hide scrollbar
-                scrollSnapType: "x mandatory", // Snap to card positions
-              }}
-            >
-              {cards.map((card, index) => {
-                const isCenter = index === centerIndex;
-                const isVisible = Math.abs(index - centerIndex) <= 1;
+            {cards.map((card, index) => {
+              const isCenter = index === centerIndex;
+              const isVisible = Math.abs(index - centerIndex) <= 2;
 
-                return (
-                  <Card
-                    key={index}
-                    onClick={() => handleCardClick(index)}
-                    height="30vh"
-                    sx={{
-                      minWidth: isCenter ? 250 : 200,
-                      flexShrink: 0,
-                      transform: isCenter ? "scale(1.1)" : "scale(0.9)",
-                      opacity: isCenter ? 1 : 0.7,
-                      border: "0 solid transparent",
-                      filter: isCenter ? "none" : "blur(2px)",
-                      transition:
-                        "transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease",
-                      scrollSnapAlign: "center",
-                      visibility: isVisible ? "visible" : "hidden",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      height="90"
-                      image={card.image}
-                      alt={card.title}
-                    />
-                    <CardContent>
-                      <Typography variant="h6">{card.title}</Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {card.description}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </Box>
+              return (
+                <Card
+                  key={index}
+                  onClick={() => handleCardClick(index)}
+                  sx={{
+                    minWidth: isCenter ? 250 : 200,
+                    flexShrink: 0,
+                    transform: isCenter ? "scale(1.1)" : "scale(0.9)",
+                    opacity: isCenter ? 1 : 0.7,
+                    filter: isCenter ? "none" : "blur(2px)",
+                    transition:
+                      "transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease",
+                    scrollSnapAlign: "center",
+                    visibility: isVisible ? "visible" : "hidden",
+                    cursor: "pointer",
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="90"
+                    image={card.image}
+                    alt={card.title}
+                  />
+                  <CardContent>
+                    <Typography variant="h6">{card.title}</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {card.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </Box>
         </Box>
-      </Container>
-    </>
+      </Box>
+    </Container>
   );
 };
 
 export default CategoryPage;
+b.

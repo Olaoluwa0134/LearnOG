@@ -7,7 +7,7 @@ const PublicHeader = () => {
       container
       justifyContent="space-between"
       alignItems="center"
-      sx={{ paddingX: 5 }}
+      sx={{ paddingX: 5, marginTop: "2em" }}
     >
       <Grid2>
         <Typography

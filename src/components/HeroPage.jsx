@@ -18,11 +18,7 @@ const HeroPage = () => {
       >
         <Background />
       </Box>
-      <Container
-        maxWidth="xl"
-        disableGutters
-        sx={{ paddingTop: "2em", height: "0%" }}
-      >
+      <Container maxWidth="xl" disableGutters sx={{ height: "0%" }}>
         <PublicHeader />
 
         <Box
