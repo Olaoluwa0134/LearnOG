@@ -35,14 +35,26 @@ const HeroPage = () => {
             marginTop: "2em",
           }}
         >
-          <Typography variant="h1" align="center" sx={{ fontSize: "3em" }}>
+          <Typography
+            variant="h1"
+            align="center"
+            sx={{ fontSize: "3em", fontWeight: 700 }}
+          >
             Test Your Knowledge with Fun Quizzes!
           </Typography>
-          <Typography variant="body1" align="center" mt={2}>
+          <Typography
+            variant="body1"
+            align="center"
+            sx={{ marginTop: 2, fontWeight: 600 }}
+          >
             Put your knowledge to test with question curatied just for you.
           </Typography>
           <Grid2 container spacing={2} mt={2}>
-            <Button variant="contained" color="secondary">
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => (window.location.href = "/category")}
+            >
               Take the Test
             </Button>
             <Button variant="contained">Login</Button>
