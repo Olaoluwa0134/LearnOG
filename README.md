@@ -70,9 +70,6 @@ Contributions to the LearnOG project are welcome! If you have any ideas for impr
 
 Please ensure your contributions adhere to any existing code style and guidelines.
 
-## License
-
-[Specify your project license here, e.g., MIT License]
 
 ## Acknowledgements
 
