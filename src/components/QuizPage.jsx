@@ -51,7 +51,7 @@ const QuizPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = `https://opentdb.com/api.php?amount=10&category=${categoryMap[category]}&difficulty=medium&type=multiple`;
+      const url = `https://opentdb.com/api.php?amount=10&category=${categoryMap[category]}&difficulty=easy&type=multiple`;
       console.log("Fetching data from:", url);
       console.log("Category:", category);
       try {
@@ -74,7 +74,7 @@ const QuizPage = () => {
     };
 
     fetchData();
-  }, [category]);
+  }, [category, questions]);
 
   const handleAnswerSelect = (answer) => {
     setSelectedAnswers({
